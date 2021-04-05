@@ -1,1 +1,298 @@
+ISC2019_1
+
+/*Design a program to accept a day number (between 1 and 366), year (in 4 digits) from the user to generate and display the corresponding date. Also, accept N (1 <= N <= 100) from the user to compute and display the future date corresponding to ‘N’ days after the generated date. Display an error message if the value of the day number, year and N are not within the limit or not according to the condition specified.
+
+Test your program with the following data and some random data:
+
+Example 1:
+INPUT:
+DAY NUMBER: 255
+YEAR: 2018
+DATE AFTER (N DAYS): 22
+OUTPUT:
+DATE: 12TH SEPTEMBER, 2018
+DATE AFTER 22 DAYS: 4TH OCTOBER, 2018
+
+Example 2:
+INPUT:
+DAY NUMBER: 360
+YEAR: 2018
+DATE AFTER (N DAYS): 45
+OUTPUT:
+DATE: 26TH DECEMBER, 2018
+DATE AFTER 45 DAYS: 9TH FEBRUARY, 2019
+
+Example 3:
+INPUT:
+DAY NUMBER: 500
+YEAR: 2018
+DATE AFTER (N DAYS): 33
+OUTPUT:
+DAY NUMBER OUT OF RANGE
+
+Example 4:
+INPUT:
+DAY NUMBER: 150
+YEAR: 2018
+DATE AFTER (N DAYS): 330
+OUTPUT:
+DATE AFTER (N DAYS) OUT OF RANGE
+ */
+
+import java.util.*;
+class Date_isc2019_1 
+{
+    public static void main(String[] args) 
+    {
+        Scanner sc= new Scanner(System.in);
+        String prefix;
+        boolean flag, leap;   
+        int day_num,year,dayAfter,i,N,m = 0,k=1;;
+        String[] months = {"January","Feburary","March","April","May","June","July","August","Sepetember","October","November","December"};
+        int[] mdays={31,28,31,30,31,30,31,31,30,31,30,31};
+        int[] ldays={31,29,31,30,31,30,31,31,30,31,30,31};   
+        do 
+        {
+            System.out.println("Enter a day number (between 1 and 366)");
+            day_num = sc.nextInt();
+            if(day_num < 1 || day_num > 366)
+                System.out.println("INVALID DAY NUMBER:");
+        }
+        while(day_num < 1 || day_num > 366);
+
+        do 
+        {
+            System.out.println("Enter the year");
+            year = sc.nextInt();
+            if(Integer.toString(year).length()!=4)
+                System.out.println("INVALID YEAR:");
+        }
+        while(Integer.toString(year).length()!=4);
+        do  
+        {
+            System.out.println("Enter the value of N:");
+            N = sc.nextInt();
+            if(N < 1 || N > 100)
+                System.out.println("INVALID DAY NUMBER (between 1 and 100):");
+        }
+        while(N < 1 || N > 100);
+
+        for(i = 1; i <= day_num; i++) 
+        {
+            if( checkLeap(year) == true ? k > ldays[m] : k > mdays[m] ) 
+            {
+                k = 1;
+                m++;
+            }
+            k++;   
+        }
+
+        prefix= (k-1)%10 == 1 ? "st" : (k-1)%10 == 2 ? "nd" : (k-1)%10 == 3 ? "rd" : "th";
+        System.out.println("DATE:     "+(k-1)+prefix+" "+months[m]+" ,"+year); 
+        for ( i = 1; i <= N; i++) 
+        {
+            if( checkLeap(year) == true ? k > ldays[m] : k > mdays[m] ) 
+            {
+                k = 1;
+                m++;
+                if(m > 11) 
+                {
+                    year++;
+                    m = 0;
+                }
+            }
+            k++;   
+        }
+        prefix = (k-1)%10 == 1 ? "st" : (k-1)%10 == 2 ? "nd" : (k-1)%10 == 3 ? "rd" : "th";
+        System.out.println("DATE AFTER "+N+" DAYS:"+(k-1)+""+prefix+" "+months[m]+"  ,"+year);       
+    }   
+
+    public static boolean checkLeap(int y)  
+    {
+        boolean leap=false;
+        if(y%400==0)
+            leap=true;
+        else if (y%100==0)
+            leap=false;
+        else if (y%4==0)
+            leap=true;
+        else
+            leap=false;
+        return leap;
+    }    
+}
+
+ISC2019_2
+
+/*Write a program to declare a single-dimensional array a[] and a square matrix b[][] of size N, where N > 2 and N < 10. Allow the user to input positive integers into the single dimensional array.
+
+Perform the following tasks on the matrix:
+
+a) Sort the elements of the single-dimensional array in ascending order using any standard sorting technique and display the sorted elements.
+
+b) Fill the square matrix b[][] in the following format.
+If the array a[] = {5, 2, 8, 1} then, after sorting a[] = {1, 2, 5, 8}
+Then, the matrix b[][] would fill as below:
+
+1    2    5    8
+1    2    5    1
+1    2    1    2
+1    1    2    5
+c) Display the filled matrix in the above format.
+
+Test your program for the following data and some random data:
+
+Example 1:
+INPUT:
+N = 3
+ENTER ELEMENTS OF SINGLE DIMENSIONAL ARRAY: 3 1 7
+OUTPUT:
+SORTED ARRAY: 1 3 7
+FILLED MATRIX
+
+1    3    7
+1    3    1
+1    1    3
+Example 2:
+INPUT:
+N = 13
+OUTPUT:
+MATRIX SIZE OUT OF RANGE
+*/
+
+import java.util.*;
+class ArrayFormat_isc2019_2
+{
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        int n,i,j,temp,len,k;
+        System.out.print("N = ");
+        n = sc.nextInt();
+        if(n < 3 || n > 9)
+        {
+            System.out.println("MATRIX SIZE OUT OF RANGE.");
+            System.exit(0);
+        }
+        int a[] = new int[n];
+        int b[][] = new int[n][n];
+        System.out.println("ENTER ELEMENTS OF SINGLE DIMENSIONAL ARRAY:");
+        for(i = 0; i < n; i++)
+            a[i] = sc.nextInt();
+        for(i = 0; i < n; i++)
+        {
+            for( j = 0; j < n - 1 - i; j++)
+            {
+                if(a[j] > a[j + 1]){
+                    temp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = temp;
+                }
+            }
+        }
+        System.out.print("SORTED ARRAY:");
+        for(i = 0; i < n; i++)
+            System.out.print(a[i] + " ");
+        System.out.println();
+        len = n;
+        for( i = 0; i < n; i++){
+             j = 0;
+            for(j = 0; j < len; j++)
+                b[i][j] = a[j];
+             k = 0;
+            while(j < n){
+                b[i][j] = a[k];
+                j++;
+                k++;
+            }
+            len--;
+        }
+        System.out.println("FILLED MATRIX");
+        for(i = 0; i < n; i++){
+            for( j = 0; j < n; j++){
+                System.out.print(b[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+}
+
+ISC2019_3
+
+/*Write a program to accept a sentence which may be terminated by either ‘.’, ‘?’ or ‘!’ only. The words are to be separated by a single blank space and are in uppercase.
+
+Perform the following tasks:
+
+a) Check for the validity of the accepted sentence.
+b) Convert the non-palindrome words of the sentence into palindrome words by concatenating the word by its reverse (excluding the last character).
+Example: The reverse of the word HELP would be LEH (omitting the last alphabet) and by concatenating both, the new palindrome word is HELPLEH. Thus, the word HELP becomes HELPLEH.
+Note: The words which end with repeated alphabets, for example ABB would become ABBA and not ABBBA and XAZZZ becomes XAZZZAX.
+
+[Palindrome word: Spells same from either side. Example: DAD, MADAM etc.]
+
+c) Display the original sentence along with the converted sentence.
+
+Test your program for the following data and some random data:
+
+Example 1:
+INPUT: THE BIRD IS FLYING.
+OUTPUT:
+THE BIRD IS FLYING.
+THEHT BIRDRIB ISI FLYINGNIYLF
+
+Example 2:
+INPUT: IS THE WATER LEVEL RISING?
+OUTPUT:
+IS THE WATER LEVEL RISING?
+ISI THEHT WATERETAW LEVEL RISINGNISIR
+
+Example 3:
+INPUT: THIS MOBILE APP LOOKS FINE.
+OUTPUT:
+THIS MOBILE APP LOOKS FINE.
+THISIHT MOBILELIBOM APPA LOOKSKOOL FINENIF
+
+Example 4:
+INPUT: YOU MUST BE CRAZY#
+OUTPUT:
+INVALID INPUT
+*/
+
+import java.util.*;
+class Palindrome_isc2019_3
+{
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        String str,word,wordrev,strpal="";
+        char ch;
+        int count,i;
+        System.out.print("Sentence: ");
+        str = sc.nextLine().toUpperCase();
+         ch = str.charAt(str.length() - 1);
+        if(ch != '.' && ch != '?' && ch != '!')
+        {
+            System.out.println("INVALID INPUT");
+            return;
+        }
+        StringTokenizer st = new StringTokenizer(str, " ?.!,");
+        count = st.countTokens();
+        
+       while(st.hasMoreTokens())
+        {
+            word = st.nextToken();
+            wordrev="";
+            for(i=0;i<word.length();i++)
+            {
+               wordrev=word.charAt(i)+wordrev;
+            }
+            if(word.equalsIgnoreCase(wordrev))
+                strpal += word + " ";
+            else
+                strpal += word+wordrev + " ";
+        }
+        System.out.println(str);
+        System.out.println(strpal);
+    }
+ }
 
