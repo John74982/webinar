@@ -223,10 +223,6 @@ class q2_string1
 	}
 }
 
-
-
-
-
 #PROGRAM 3
 
 import java.util.*;
